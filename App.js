@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, Alert, Button, TextInput, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import {FlatList, Alert, Button, TextInput, StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, TouchableHighlight, ScrollView, Image} from 'react-native';
 
 export default class App extends Component<Props> {
   state = {
@@ -15,14 +15,25 @@ export default class App extends Component<Props> {
     this.setState({list});
   }
   
-  renderItem = (item) => <Text style={styles.input}>{item.key}</Text>
+  renderItem = (item) => {
+    return(
+      <TouchableOpacity 
+      onPress={() => Alert.alert(`you cliked ${item.key}`)}
+      style={{backgroundColor: '#afe'}}
+      >
+        <Text style={styles.input}>{item.key}</Text>
+      </TouchableOpacity>
+    )
+  }
 
   renderSeparator = () => <View style={{ height:10, backgroundColor: '#D4AF37'}}></View>
 
   renderHeader = () => {
+    
+
     return(
-      <View style={{ height: 100, backgroundColor: '#a9a9a9'}}>
-        <Text style={[styles.welcome, {color: '#fff'} ]}>welcome to the header</Text>
+      <View style={{ height: height/5, backgroundColor: '#a9a9a9'}}>
+        <Text style={[styles.welcome, {color: '#fff'} ]}>welcome to the {headerText} header</Text>
       </View>
     )
   }
@@ -36,8 +47,27 @@ export default class App extends Component<Props> {
   }
 
   render() {
-    return (
+    var navigationView = (
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <Text style={{margin: 10, fontSize: 15, textAlign: 'left'}}>I'm in the Drawer!</Text>
+      </View>
+    );
+    
+    return (      
       <View style={styles.container}>
+        {/* <ScrollView
+        contentContainerStyle={{ alignItems: 'center', justifyContent: 'center'}}
+        centerContent
+        maximumZoomScale={2}
+        minimumZoomScale={1}
+        >
+          <TouchableHighlight>
+            <Image 
+              style={{width: 300, height: 300}}
+              source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
+            />
+          </TouchableHighlight>
+        </ScrollView> */}
         {
           (this.state.list.length)?
           <FlatList 
@@ -48,7 +78,7 @@ export default class App extends Component<Props> {
             ListHeaderComponent={this.renderHeader}
             ListFooterComponent={this.renderFooter}
             onEndReached={() => this.fillList(this.state.list.length + 50) }
-            onEndReachedThreshold={0.1}
+            onEndReachedThreshold={0.1}            
           />: <ActivityIndicator />
         }
       </View>
