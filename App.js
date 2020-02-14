@@ -77,7 +77,6 @@ export default class App extends Component<Props> {
           {
             (this.state.list.length)?
             <FlatList 
-              style={{marginTop: 50, marginBottom: 50}}
               data={this.state.list}
               renderItem={ ({item}) => this.renderItem(item)}
               ItemSeparatorComponent={this.renderSeparator}
@@ -96,8 +95,9 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
+    flexDirection: "row-reverse",
+    justifyContent: "center",
+    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   welcome: {
@@ -113,6 +113,9 @@ const styles = StyleSheet.create({
     borderColor: 'black'
   },
   halfContainer: {
-    flex: 1
+    flex: 1,
+    backgroundColor: 'blue',
+    justifyContent: "center",
+    alignItems: 'center'
   }
 });
