@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, Alert, Button, TextInput, StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, TouchableHighlight, ScrollView, Image} from 'react-native';
+import {Platform, Dimensions, FlatList, Alert, Button, TextInput, StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, TouchableHighlight, ScrollView, Image} from 'react-native';
 
 export default class App extends Component<Props> {
   state = {
@@ -29,10 +29,13 @@ export default class App extends Component<Props> {
   renderSeparator = () => <View style={{ height:10, backgroundColor: '#D4AF37'}}></View>
 
   renderHeader = () => {
-    
+    const {width, height} = Dimensions.get('screen');
+    const isPortrait = (width < height)? true: false;
+    const backgroundColor = (isPortrait)? '#a9a9a9': '#555ddd';
+    const headerText = (Platform.OS === 'ios')? 'iOS': 'Android';
 
     return(
-      <View style={{ height: height/5, backgroundColor: '#a9a9a9'}}>
+      <View style={{ height: height/5, backgroundColor}}>
         <Text style={[styles.welcome, {color: '#fff'} ]}>welcome to the {headerText} header</Text>
       </View>
     )
@@ -55,32 +58,36 @@ export default class App extends Component<Props> {
     
     return (      
       <View style={styles.container}>
-        {/* <ScrollView
-        contentContainerStyle={{ alignItems: 'center', justifyContent: 'center'}}
-        centerContent
-        maximumZoomScale={2}
-        minimumZoomScale={1}
-        >
-          <TouchableHighlight>
-            <Image 
-              style={{width: 300, height: 300}}
-              source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
-            />
-          </TouchableHighlight>
-        </ScrollView> */}
-        {
-          (this.state.list.length)?
-          <FlatList 
-            style={{marginTop: 50, marginBottom: 50}}
-            data={this.state.list}
-            renderItem={ ({item}) => this.renderItem(item)}
-            ItemSeparatorComponent={this.renderSeparator}
-            ListHeaderComponent={this.renderHeader}
-            ListFooterComponent={this.renderFooter}
-            onEndReached={() => this.fillList(this.state.list.length + 50) }
-            onEndReachedThreshold={0.1}            
-          />: <ActivityIndicator />
-        }
+        <View style={styles.halfContainer}>
+          <ScrollView
+          contentContainerStyle={{ alignItems: 'center', justifyContent: 'center'}}
+          centerContent
+          maximumZoomScale={2}
+          minimumZoomScale={1}
+          >
+            <TouchableHighlight>
+              <Image 
+                style={{width: 300, height: 300}}
+                source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
+              />
+            </TouchableHighlight>
+          </ScrollView>
+        </View>
+        <View style={styles.halfContainer}>
+          {
+            (this.state.list.length)?
+            <FlatList 
+              style={{marginTop: 50, marginBottom: 50}}
+              data={this.state.list}
+              renderItem={ ({item}) => this.renderItem(item)}
+              ItemSeparatorComponent={this.renderSeparator}
+              ListHeaderComponent={this.renderHeader}
+              ListFooterComponent={this.renderFooter}
+              onEndReached={() => this.fillList(this.state.list.length + 50) }
+              onEndReachedThreshold={0.1}            
+            />: <ActivityIndicator />
+          }
+        </View>
       </View>
     );
   }
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
     backgroundColor: '#F5FCFF',
   },
   welcome: {
@@ -98,17 +105,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
   input: {
     fontSize: 20,
-    width: 400,
-    height: 50,
+    height: 40,
     padding: 5,
     borderWidth: 1,
     borderColor: 'black'
+  },
+  halfContainer: {
+    flex: 1
   }
 });
